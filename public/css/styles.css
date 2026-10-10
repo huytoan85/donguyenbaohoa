@@ -392,19 +392,29 @@ button, input, select, textarea {
   margin-bottom: 22px;
 }
 
+.hero-speaker-label {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--slate-500);
+  margin-bottom: 6px;
+}
+
 .hero-name-block {
   display: block;
-  font-size: 2.85rem;
+  font-size: 3.15rem;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.15;
   letter-spacing: -0.025em;
   color: var(--navy-900);
-  margin-bottom: 10px;
-  text-wrap: balance;
+  margin-bottom: 12px;
+  white-space: nowrap;
 }
 
 .hero-role-block {
-  display: inline-block;
+  display: block;
   font-size: 1.85rem;
   font-weight: 700;
   line-height: 1.3;
@@ -586,6 +596,20 @@ button, input, select, textarea {
   line-height: 1.3;
   margin-bottom: 16px;
   text-wrap: balance;
+}
+
+.about-section-header {
+  max-width: 1080px;
+}
+
+.about-title-singleline {
+  font-size: 2.85rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--navy-900);
+  line-height: 1.25;
+  margin-bottom: 18px;
+  white-space: nowrap;
 }
 
 .section-subtitle {
@@ -1940,10 +1964,15 @@ textarea.form-control {
    =================================================================== */
 @media (max-width: 1024px) {
   .hero-name-block {
-    font-size: 2.35rem;
+    font-size: 2.45rem;
+    white-space: normal;
   }
   .hero-role-block {
     font-size: 1.55rem;
+  }
+  .about-title-singleline {
+    font-size: 2.25rem;
+    white-space: normal;
   }
   .hero-grid {
     gap: 36px;
@@ -1984,12 +2013,22 @@ textarea.form-control {
     height: 420px;
   }
 
+  .hero-speaker-label {
+    font-size: 1.1rem;
+  }
+
   .hero-name-block {
-    font-size: 1.95rem;
+    font-size: 2rem;
+    white-space: normal;
   }
 
   .hero-role-block {
     font-size: 1.35rem;
+  }
+
+  .about-title-singleline {
+    font-size: 1.75rem;
+    white-space: normal;
   }
 
   .hero-stats {

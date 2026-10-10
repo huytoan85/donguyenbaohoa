@@ -81,7 +81,7 @@ async function loadSpeakerInfo() {
 
       // Hydrate dynamically if elements exist
       const fullName = d.speaker_name || 'ĐỖ NGUYỄN BẢO HÒA';
-      updateText('speakerNameHero', `Diễn giả ${fullName}`);
+      updateText('speakerNameHero', fullName);
       updateText('aboutSpeakerName', `Diễn giả ${fullName}`);
       updateText('brandSpeakerName', fullName);
       updateText('footerBrandSpeakerName', fullName);
