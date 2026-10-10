@@ -355,9 +355,9 @@ function renderCurriculumModules(course) {
         </div>
       `).join('')}
     </div>
-    <div style="margin-top: 30px; text-align: center;">
-      <button class="btn btn-primary btn-lg" onclick="selectCourseToRegister(${course.id})">
-        Đăng ký học khóa này ngay
+    <div style="margin-top: 24px; text-align: center;">
+      <button class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem; border-radius: 9999px;" onclick="selectCourseToRegister(${course.id})">
+        Đăng ký học khóa này
       </button>
     </div>
   `;

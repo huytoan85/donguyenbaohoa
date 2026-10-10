@@ -1075,24 +1075,22 @@ button, input, select, textarea {
 }
 
 .module-outcome {
-  background: var(--white);
+  background: var(--slate-50);
   border: 1px dashed var(--slate-300);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   padding: 12px 16px;
   font-size: 0.9rem;
   color: var(--navy-900);
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
   line-height: 1.6;
-  text-align: justify;
-  text-justify: inter-word;
+  text-align: left;
+  display: block;
 }
 
 .outcome-tag {
+  display: block;
   font-weight: 700;
   color: var(--orange-500);
-  white-space: nowrap;
+  margin-bottom: 4px;
 }
 
 /* ===================================================================
@@ -2095,29 +2093,29 @@ textarea.form-control {
 
   /* Hero Section */
   .hero-section {
-    padding: 32px 0 50px;
+    padding: 24px 0 44px;
   }
 
   .hero-grid {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 20px;
   }
 
   .hero-visual {
     order: -1;
-    max-width: 330px;
-    margin: 0 auto;
+    max-width: 280px;
+    margin: 0 auto 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
   .hero-image-wrap {
-    width: 100%;
-    max-width: 290px;
-    height: 310px;
+    width: 240px;
+    height: 250px;
     border-radius: 20px;
     border-width: 4px;
+    margin: 0 auto;
   }
 
   .hero-img {
@@ -2125,92 +2123,72 @@ textarea.form-control {
     object-position: top center;
   }
 
-  /* Fix floating badges: convert from negative absolute off-screen positions to clean cards */
+  /* Hide redundant desktop-only floating badges on mobile */
   .floating-badge {
-    position: static !important;
-    animation: none !important;
-    margin-top: 10px;
-    width: 100%;
-    max-width: 290px;
-    padding: 10px 14px;
-    gap: 10px;
-    border-radius: 12px;
-    box-shadow: var(--shadow-sm);
-  }
-
-  .floating-badge.badge-top,
-  .floating-badge.badge-bottom {
-    top: auto;
-    bottom: auto;
-    left: auto;
-    right: auto;
-  }
-
-  .fbadge-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 1.1rem;
-    border-radius: 8px;
-  }
-
-  .fbadge-text strong {
-    font-size: 0.88rem;
-  }
-
-  .fbadge-text span {
-    font-size: 0.72rem;
+    display: none !important;
   }
 
   .hero-badge {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     padding: 6px 14px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     white-space: normal;
     text-align: center;
     line-height: 1.4;
   }
 
   .hero-speaker-label {
-    font-size: 1.05rem;
+    font-size: 1rem;
     letter-spacing: 0.06em;
     margin-bottom: 4px;
   }
 
   .hero-name-block {
-    font-size: 2.15rem;
+    font-size: 2.1rem;
     white-space: normal;
     line-height: 1.2;
     margin-bottom: 8px;
   }
 
   .hero-role-block {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     line-height: 1.35;
   }
 
   .hero-desc {
-    font-size: 0.95rem;
+    font-size: 0.94rem;
     line-height: 1.65;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     text-align: left;
     text-justify: auto;
   }
 
+  /* Compact, balanced side-by-side buttons */
   .hero-actions {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     gap: 10px;
     width: 100%;
+    max-width: 380px;
+    margin: 0 auto 20px;
   }
 
   .hero-actions .btn {
-    width: 100%;
-    padding: 13px 20px;
+    flex: 1;
+    width: auto;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    white-space: nowrap;
+    border-radius: var(--radius-full);
   }
 
   .hero-stats {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    margin-top: 26px;
+    margin-top: 22px;
   }
 
   .stat-item {
@@ -2366,13 +2344,17 @@ textarea.form-control {
   }
 
   .course-actions {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
 
   .course-actions .btn {
     width: 100%;
-    padding: 11px 16px;
+    padding: 9px 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border-radius: var(--radius-full);
   }
 
   /* Curriculum Showcase */
@@ -2559,10 +2541,17 @@ textarea.form-control {
     padding-left: 14px;
   }
 
+  /* Compact centered registration button */
   .form-card .btn-primary {
-    width: 100%;
-    padding: 14px 20px;
-    font-size: 1rem;
+    width: auto;
+    min-width: 220px;
+    max-width: 280px;
+    margin: 12px auto 0;
+    display: flex;
+    justify-content: center;
+    padding: 11px 22px;
+    font-size: 0.92rem;
+    border-radius: var(--radius-full);
   }
 
   /* Modal */
@@ -2576,12 +2565,23 @@ textarea.form-control {
   }
 
   .modal-content-wrap {
-    padding: 24px 16px;
+    padding: 20px 14px;
   }
 
   .modal-close-btn {
     top: 12px;
     right: 12px;
+  }
+
+  .modal-content-wrap .btn,
+  .modal-content-wrap .btn-lg {
+    width: auto;
+    max-width: 280px;
+    padding: 10px 22px;
+    font-size: 0.9rem;
+    margin: 0 auto;
+    display: inline-flex;
+    border-radius: var(--radius-full);
   }
 
   /* Footer */
@@ -2609,17 +2609,17 @@ textarea.form-control {
 
   .floating-quick-contact {
     position: fixed;
-    bottom: 20px;
-    right: 16px;
+    bottom: 16px;
+    right: 14px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     z-index: 999;
   }
 
   .quick-btn {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
   }
 
   body {
@@ -2646,10 +2646,23 @@ textarea.form-control {
   .hero-name-block {
     font-size: 1.85rem;
   }
+  .hero-actions .btn {
+    padding: 9px 10px;
+    font-size: 0.82rem;
+  }
   .section-title {
-    font-size: 1.6rem;
+    font-size: 1.55rem;
   }
   .about-title-singleline {
-    font-size: 1.45rem;
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-actions {
+    flex-direction: column;
+  }
+  .hero-actions .btn {
+    width: 100%;
   }
 }
