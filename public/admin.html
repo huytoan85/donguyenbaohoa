@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM Quản Lý Học Viên & Nội Dung Diễn Giả</title>
+  
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E<text y=%2222%22 font-size=%2222%22>⚡</text></svg>">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+  <!-- ===================================================================
+       1. LOGIN SCREEN (SECURE ACCESS)
+       =================================================================== -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-logo">CRM</div>
+        <h2>Hệ Thống Quản Trị Diễn Giả</h2>
+        <p>Đăng nhập để quản lý học viên và nội dung website</p>
+      </div>
+
+      <div id="loginAlert" style="display: none; background: #fee2e2; border: 1px solid #f87171; color: #b91c1c; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem;"></div>
+
+      <form id="loginForm">
+        <div class="admin-form-group">
+          <label for="loginUser">Tên đăng nhập</label>
+          <input type="text" id="loginUser" class="admin-input" placeholder="admin" required autocomplete="username">
+        </div>
+
+        <div class="admin-form-group">
+          <label for="loginPass">Mật khẩu</label>
+          <input type="password" id="loginPass" class="admin-input" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" id="loginBtn" class="admin-input" style="background: var(--admin-orange); color: #fff; font-weight: 700; cursor: pointer; border: none; margin-top: 10px; padding: 13px;">
+          Đăng nhập vào CRM
+        </button>
+      </form>
+
+      <p style="text-align: center; font-size: 0.8rem; color: #64748b; margin-top: 24px;">
+        🔒 Hệ thống bảo mật thông tin học viên theo chuẩn mã hóa máy chủ.
+      </p>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       2. MAIN CRM PORTAL LAYOUT
+       =================================================================== -->
+  <div class="admin-layout" id="adminLayout" style="display: none;">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--admin-orange); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800;">
+          BH
+        </div>
+        <div>
+          <div class="sidebar-brand-name">DIỄN GIẢ CRM</div>
+          <div class="sidebar-brand-sub">Hệ Thống Quản Trị</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item-btn active" data-tab="tabDashboard">
+          <span>📊</span> Tổng quan (Dashboard)
+        </button>
+        <button class="nav-item-btn" data-tab="tabLeads">
+          <span>👥</span> Quản lý Học viên (CRM)
+        </button>
+        <button class="nav-item-btn" data-tab="tabCourses">
+          <span>🎓</span> Quản lý Khóa học
+        </button>
+        <button class="nav-item-btn" data-tab="tabSettings">
+          <span>✍️</span> Quản lý Diễn giả & CMS
+        </button>
+        <button class="nav-item-btn" data-tab="tabArticles">
+          <span>📖</span> Góc chia sẻ kiến thức
+        </button>
+        <button class="nav-item-btn" data-tab="tabPassword">
+          <span>🔑</span> Đổi mật khẩu
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="/" target="_blank" class="nav-item-btn" style="color: #38bdf8;">
+          <span>🌐</span> Xem Landing Page ↗
+        </a>
+        <div class="admin-user-info">
+          <div class="user-avatar-circle">A</div>
+          <div class="user-details">
+            <strong id="adminUserName">Admin</strong>
+            <span>Quản trị viên</span>
+          </div>
+        </div>
+        <button class="nav-item-btn" onclick="logout()" style="color: #f87171;">
+          <span>🚪</span> Đăng xuất
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Body -->
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <h1 class="topbar-title" id="topbarTitle">Tổng quan (Dashboard)</h1>
+        <div class="topbar-actions">
+          <a href="/" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; background: #eff6ff; color: #1d4ed8; font-weight: 700; font-size: 0.88rem;">
+            🌐 Xem Website Diễn Giả
+          </a>
+        </div>
+      </header>
+
+      <div class="admin-body">
+        
+        <!-- =============================================================
+             TAB 1: DASHBOARD
+             ============================================================= -->
+        <section id="tabDashboard" class="tab-pane active">
+          <!-- 4 Main KPI Cards -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-info">
+                <h6>Tổng Lượt Đăng Ký</h6>
+                <div class="val" id="dashTotalRegs">0</div>
+              </div>
+              <div class="metric-icon-wrap blue">📋</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-info">
+                <h6>Đăng Ký Mới Cần Gọi</h6>
+                <div class="val" id="dashNewRegs" style="color: var(--admin-orange);">0</div>
+              </div>
+              <div class="metric-icon-wrap orange">🔔</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-info">
+                <h6>Đã Ghi Danh Thành Công</h6>
+                <div class="val" id="dashEnrolledRegs" style="color: #10b981;">0</div>
+              </div>
+              <div class="metric-icon-wrap green">🎓</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-info">
+                <h6>Số Khóa Học Đang Mở</h6>
+                <div class="val" id="dashActiveCourses">0</div>
+              </div>
+              <div class="metric-icon-wrap purple">📚</div>
+            </div>
+          </div>
+
+          <!-- Charts & Distributions -->
+          <div class="charts-row">
+            <div class="card-panel">
+              <div class="panel-header">
+                <h3 class="panel-title">Phân Bổ Theo Trạng Thái Tư Vấn</h3>
+              </div>
+              <div class="status-bars-list" id="statusBarsContainer">
+                <!-- Injected by admin.js -->
+              </div>
+            </div>
+
+            <div class="card-panel">
+              <div class="panel-header">
+                <h3 class="panel-title">Học Viên Quan Tâm Theo Khóa Học</h3>
+              </div>
+              <div class="status-bars-list" id="courseBreakdownContainer">
+                <!-- Injected by admin.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Registrations -->
+          <div class="card-panel">
+            <div class="panel-header">
+              <h3 class="panel-title">Đăng Ký Gần Đây Nhất</h3>
+            </div>
+            <div class="data-table-container">
+              <table class="crm-table">
+                <thead>
+                  <tr>
+                    <th>Họ và tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Khóa học quan tâm</th>
+                    <th>Trạng thái</th>
+                    <th>Chi tiết</th>
+                  </tr>
+                </thead>
+                <tbody id="recentLeadsTbody">
+                  <!-- Injected by admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =============================================================
+             TAB 2: STUDENT LEADS CRM
+             ============================================================= -->
+        <section id="tabLeads" class="tab-pane">
+          <!-- Filter & Action Bar -->
+          <div class="table-filter-bar">
+            <div class="filter-controls-left">
+              <!-- Search Box -->
+              <div class="search-input-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="leadSearchInput" placeholder="Tìm theo tên, SĐT, email...">
+              </div>
+
+              <!-- Filter by Status -->
+              <select id="leadStatusFilter" class="filter-select">
+                <option value="Tất cả">Tất cả trạng thái</option>
+                <option value="Mới đăng ký">Mới đăng ký</option>
+                <option value="Đã liên hệ">Đã liên hệ</option>
+                <option value="Đang tư vấn">Đang tư vấn</option>
+                <option value="Đã ghi danh">Đã ghi danh</option>
+                <option value="Đã hoàn thành">Đã hoàn thành</option>
+                <option value="Đã hủy">Đã hủy</option>
+              </select>
+
+              <!-- Filter by Course -->
+              <select id="leadCourseFilter" class="filter-select">
+                <option value="Tất cả">Tất cả khóa học</option>
+                <!-- Populated dynamically -->
+              </select>
+
+              <button class="btn-icon-action" id="btnResetFilter" title="Đặt lại bộ lọc" style="width: auto; padding: 0 12px; font-weight: 600; font-size: 0.85rem;">
+                🔄 Đặt lại
+              </button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <span id="leadsCountDisplay" style="font-size: 0.88rem; font-weight: 700; color: var(--admin-navy-900);"></span>
+              <button class="btn-icon-action" id="btnExportCsv" title="Tải xuống danh sách Excel" style="width: auto; padding: 8px 16px; background: #10b981; color: #fff; font-weight: 700; border-color: #10b981;">
+                📥 Xuất file CSV (Excel)
+              </button>
+            </div>
+          </div>
+
+          <!-- CRM Data Table -->
+          <div class="data-table-container">
+            <table class="crm-table">
+              <thead>
+                <tr>
+                  <th>Mã</th>
+                  <th>Họ và tên</th>
+                  <th>Số điện thoại</th>
+                  <th>Email</th>
+                  <th>Khóa học quan tâm</th>
+                  <th>Trạng thái</th>
+                  <th>Thời gian đăng ký</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="leadsTableBody">
+                <!-- Injected by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =============================================================
+             TAB 3: COURSES MANAGEMENT CMS
+             ============================================================= -->
+        <section id="tabCourses" class="tab-pane">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <p style="color: var(--admin-text-muted); font-size: 0.95rem;">
+              Quản lý danh mục khóa học, học phí, lịch khai giảng và chi tiết các mô đun đào tạo.
+            </p>
+            <button class="btn-icon-action" onclick="openCourseModal()" style="width: auto; padding: 9px 18px; background: var(--admin-orange); color: #fff; font-weight: 700; border: none;">
+              ➕ Thêm Khóa Học Mới
+            </button>
+          </div>
+
+          <div class="data-table-container">
+            <table class="crm-table">
+              <thead>
+                <tr>
+                  <th>Ảnh</th>
+                  <th>Tên khóa học & Slug</th>
+                  <th>Hình thức</th>
+                  <th>Lịch khai giảng</th>
+                  <th>Học phí ưu đãi</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody id="adminCoursesTbody">
+                <!-- Injected by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =============================================================
+             TAB 4: SPEAKER SETTINGS & CMS
+             ============================================================= -->
+        <section id="tabSettings" class="tab-pane">
+          <div class="card-panel" style="max-width: 900px;">
+            <div class="panel-header">
+              <h3 class="panel-title">Chỉnh Sửa Thông Tin Diễn Giả & Thương Hiệu Cá Nhân</h3>
+            </div>
+            <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 24px;">
+              Các trường có tiền tố <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px;">[Tên diễn giả]</code>, <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px;">[Lĩnh vực đào tạo]</code> có thể thay thế bằng dữ liệu thực tế bất kỳ lúc nào.
+            </p>
+
+            <form onsubmit="saveSpeakerSettings(event)">
+              <div class="form-grid-2">
+                <div class="admin-form-group">
+                  <label for="setSpeakerName">Tên Diễn giả / Chuyên gia</label>
+                  <input type="text" id="setSpeakerName" class="admin-input" required>
+                </div>
+                <div class="admin-form-group">
+                  <label for="setSpeakerTitle">Lĩnh vực đào tạo & Chức danh</label>
+                  <input type="text" id="setSpeakerTitle" class="admin-input" required>
+                </div>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="setSpeakerBadge">Huy hiệu nổi bật (Badge Hero)</label>
+                <input type="text" id="setSpeakerBadge" class="admin-input">
+              </div>
+
+              <div class="form-grid-2">
+                <div class="admin-form-group">
+                  <label for="setSpeakerPhoto">Ảnh Diễn giả chính (Hero Section)</label>
+                  <input type="text" id="setSpeakerPhoto" class="admin-input" placeholder="/images/speaker-stage.png">
+                </div>
+                <div class="admin-form-group">
+                  <label for="setSpeakerAboutPhoto">Ảnh Chân dung giới thiệu (About Section)</label>
+                  <input type="text" id="setSpeakerAboutPhoto" class="admin-input" placeholder="/images/speaker-about.jpg">
+                </div>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="setSpeakerSlogan">Thông điệp giá trị (Slogan / Value Proposition)</label>
+                <textarea id="setSpeakerSlogan" class="admin-input" style="min-height: 70px;"></textarea>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="setSpeakerBio">Tiểu sử & Kinh nghiệm chuyên môn</label>
+                <textarea id="setSpeakerBio" class="admin-input" style="min-height: 120px;"></textarea>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="setSpeakerQuote">Triết lý đào tạo & Trích dẫn (Hiển thị tại phần Giới thiệu)</label>
+                <textarea id="setSpeakerQuote" class="admin-input" style="min-height: 80px;"></textarea>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="setSpeakerMethodology">Phương pháp đào tạo (Mô hình 4D Model)</label>
+                <textarea id="setSpeakerMethodology" class="admin-input" style="min-height: 90px;"></textarea>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="setSpeakerAchievements">Thành tựu nổi bật</label>
+                <textarea id="setSpeakerAchievements" class="admin-input" style="min-height: 90px;"></textarea>
+              </div>
+
+              <h4 style="margin: 24px 0 14px; font-weight: 800; color: var(--admin-navy-900);">4 Chỉ Số Thành Tựu (Hiển thị tại Hero Section)</h4>
+              <div class="form-grid-2">
+                <div class="admin-form-group">
+                  <label for="setStatExp">Số năm kinh nghiệm (VD: 12+)</label>
+                  <input type="text" id="setStatExp" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label for="setStatStudents">Số lượng học viên (VD: 50,000+)</label>
+                  <input type="text" id="setStatStudents" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label for="setStatEnterprises">Doanh nghiệp đồng hành (VD: 250+)</label>
+                  <input type="text" id="setStatEnterprises" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label for="setStatSatisfaction">Tỷ lệ hài lòng (VD: 98.8%)</label>
+                  <input type="text" id="setStatSatisfaction" class="admin-input">
+                </div>
+              </div>
+
+              <h4 style="margin: 24px 0 14px; font-weight: 800; color: var(--admin-navy-900);">Thông Tin Liên Hệ & Kênh Tư Vấn</h4>
+              <div class="form-grid-2">
+                <div class="admin-form-group">
+                  <label for="setHotline">Số điện thoại Hotline</label>
+                  <input type="text" id="setHotline" class="admin-input" placeholder="090 859 4174">
+                </div>
+                <div class="admin-form-group">
+                  <label for="setZalo">Số điện thoại Zalo (hoặc link Zalo)</label>
+                  <input type="text" id="setZalo" class="admin-input" placeholder="090 859 4174">
+                </div>
+              </div>
+              <div class="form-grid-2">
+                <div class="admin-form-group">
+                  <label for="setEmail">Email tiếp nhận thông tin</label>
+                  <input type="email" id="setEmail" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label for="setAddress">Địa chỉ văn phòng</label>
+                  <input type="text" id="setAddress" class="admin-input">
+                </div>
+              </div>
+
+              <div style="margin-top: 24px;">
+                <button type="submit" class="admin-input" style="background: var(--admin-navy-900); color: #fff; font-weight: 700; width: auto; padding: 12px 30px; cursor: pointer; border: none;">
+                  💾 Lưu Cập Nhật Thông Tin Diễn Giả
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- =============================================================
+             TAB 5: KNOWLEDGE SHARING ARTICLES CMS
+             ============================================================= -->
+        <section id="tabArticles" class="tab-pane">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <p style="color: var(--admin-text-muted); font-size: 0.95rem;">
+              Quản lý các bài viết chia sẻ kinh nghiệm, mẹo kỹ năng và kiến thức chuyên môn trên landing page.
+            </p>
+            <button class="btn-icon-action" onclick="openArticleEditModal()" style="width: auto; padding: 9px 18px; background: var(--admin-orange); color: #fff; font-weight: 700; border: none;">
+              ➕ Viết Bài Mới
+            </button>
+          </div>
+
+          <div class="data-table-container">
+            <table class="crm-table">
+              <thead>
+                <tr>
+                  <th>Mã</th>
+                  <th>Tiêu đề bài viết</th>
+                  <th>Chuyên mục</th>
+                  <th>Thời lượng đọc</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody id="adminArticlesTbody">
+                <!-- Injected by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =============================================================
+             TAB 6: CHANGE PASSWORD
+             ============================================================= -->
+        <section id="tabPassword" class="tab-pane">
+          <div class="card-panel" style="max-width: 520px;">
+            <div class="panel-header">
+              <h3 class="panel-title">Đổi Mật Khẩu Quản Trị Viên</h3>
+            </div>
+            <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 20px;">
+              Khuyến nghị đặt mật khẩu mạnh (tối thiểu 8 ký tự, có chữ hoa, chữ thường và số).
+            </p>
+
+            <form id="changePwForm" onsubmit="submitChangePassword(event)">
+              <div class="admin-form-group">
+                <label for="pwOld">Mật khẩu hiện tại</label>
+                <input type="password" id="pwOld" class="admin-input" required autocomplete="current-password">
+              </div>
+
+              <div class="admin-form-group">
+                <label for="pwNew">Mật khẩu mới</label>
+                <input type="password" id="pwNew" class="admin-input" required autocomplete="new-password">
+              </div>
+
+              <div class="admin-form-group">
+                <label for="pwConfirm">Xác nhận mật khẩu mới</label>
+                <input type="password" id="pwConfirm" class="admin-input" required autocomplete="new-password">
+              </div>
+
+              <button type="submit" class="admin-input" style="background: var(--admin-orange); color: #fff; font-weight: 700; width: 100%; padding: 12px; cursor: pointer; border: none; margin-top: 10px;">
+                Cập nhật mật khẩu mới
+              </button>
+            </form>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ===================================================================
+       MODAL: STUDENT LEAD DETAIL & CONSULTATION NOTES
+       =================================================================== -->
+  <div class="admin-modal-overlay" id="leadDetailModal">
+    <div class="admin-modal-box">
+      <div class="admin-modal-header">
+        <h3>Hồ Sơ Học Viên & Ghi Chú Tư Vấn <span id="modalLeadId" style="color: var(--admin-orange);"></span></h3>
+        <button class="btn-icon-action" onclick="closeAdminModal('leadDetailModal')">✕</button>
+      </div>
+      <div class="admin-modal-body">
+        <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 20px; font-size: 0.92rem;">
+          <div style="margin-bottom: 8px;"><strong>Họ và tên:</strong> <span id="modalLeadName" style="font-weight: 700;"></span></div>
+          <div style="margin-bottom: 8px;">
+            <strong>Số điện thoại:</strong> 
+            <a id="modalLeadPhoneLink" href="#" style="color: var(--admin-navy-700); font-weight: 700;">
+              📞 <span id="modalLeadPhone"></span>
+            </a>
+          </div>
+          <div style="margin-bottom: 8px;"><strong>Email:</strong> <span id="modalLeadEmail"></span></div>
+          <div style="margin-bottom: 8px;"><strong>Khóa học quan tâm:</strong> <span id="modalLeadCourse" style="color: var(--admin-orange); font-weight: 700;"></span></div>
+          <div style="margin-bottom: 8px;"><strong>Nhu cầu học tập:</strong> <span id="modalLeadNeeds" style="font-style: italic;"></span></div>
+          <div><strong>Thời gian đăng ký:</strong> <span id="modalLeadTime" style="color: #64748b;"></span></div>
+        </div>
+
+        <!-- Status update dropdown -->
+        <div class="admin-form-group">
+          <label for="modalLeadStatus">Trạng Thái Hồ Sơ</label>
+          <select id="modalLeadStatus" class="admin-input" style="font-weight: 700;">
+            <option value="Mới đăng ký">Mới đăng ký (Chưa liên hệ)</option>
+            <option value="Đã liên hệ">Đã liên hệ (Đã gọi điện / Zalo)</option>
+            <option value="Đang tư vấn">Đang tư vấn (Đang thảo luận lịch học/học phí)</option>
+            <option value="Đã ghi danh">Đã ghi danh (Đã đóng học phí)</option>
+            <option value="Đã hoàn thành">Đã hoàn thành khóa học</option>
+            <option value="Đã hủy">Đã hủy / Không phù hợp</option>
+          </select>
+        </div>
+
+        <!-- Consultation Notes -->
+        <div class="admin-form-group">
+          <label for="modalLeadNotes">Ghi Chú Tư Vấn & Tiến Độ Chăm Sóc</label>
+          <textarea id="modalLeadNotes" class="admin-input" placeholder="Ghi chú kết quả cuộc gọi, nhu cầu của học viên, lịch hẹn trao đổi lại..."></textarea>
+        </div>
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn-icon-action" style="width: auto; padding: 8px 16px;" onclick="closeAdminModal('leadDetailModal')">Đóng</button>
+        <button class="btn-icon-action" style="width: auto; padding: 8px 20px; background: var(--admin-navy-900); color: #fff; font-weight: 700; border: none;" onclick="saveLeadUpdates()">
+          💾 Lưu Trạng Thái & Ghi Chú
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       MODAL: COURSE EDIT / CREATE
+       =================================================================== -->
+  <div class="admin-modal-overlay" id="courseEditModal">
+    <div class="admin-modal-box" style="max-width: 760px;">
+      <div class="admin-modal-header">
+        <h3 id="courseModalTitle">Chỉnh sửa Khóa học</h3>
+        <button class="btn-icon-action" onclick="closeAdminModal('courseEditModal')">✕</button>
+      </div>
+      <div class="admin-modal-body">
+        <form id="courseForm" onsubmit="saveCourseForm(event)">
+          <div class="form-grid-2">
+            <div class="admin-form-group">
+              <label for="cTitle">Tên khóa học <span style="color: red;">*</span></label>
+              <input type="text" id="cTitle" class="admin-input" required>
+            </div>
+            <div class="admin-form-group">
+              <label for="cSlug">Đường dẫn slug <span style="color: red;">*</span></label>
+              <input type="text" id="cSlug" class="admin-input" placeholder="ten-khoa-hoc-viet-lien" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="admin-form-group">
+              <label for="cBadge">Huy hiệu nổi bật</label>
+              <input type="text" id="cBadge" class="admin-input" placeholder="Khóa học hot nhất">
+            </div>
+            <div class="admin-form-group">
+              <label for="cFormat">Hình thức đào tạo</label>
+              <input type="text" id="cFormat" class="admin-input" placeholder="Hybrid / Trực tiếp / Online">
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="cShortDesc">Mô tả ngắn</label>
+            <textarea id="cShortDesc" class="admin-input" style="min-height: 60px;"></textarea>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="cAudience">Đối tượng phù hợp</label>
+            <input type="text" id="cAudience" class="admin-input">
+          </div>
+
+          <div class="form-grid-2">
+            <div class="admin-form-group">
+              <label for="cDuration">Thời lượng khóa học</label>
+              <input type="text" id="cDuration" class="admin-input" placeholder="6 buổi (18 giờ đào tạo)">
+            </div>
+            <div class="admin-form-group">
+              <label for="cSchedule">Lịch khai giảng</label>
+              <input type="text" id="cSchedule" class="admin-input" placeholder="25/11/2026 - Tối T3 & T5">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="admin-form-group">
+              <label for="cTuitionOriginal">Học phí gốc (VNĐ)</label>
+              <input type="number" id="cTuitionOriginal" class="admin-input" placeholder="12000000">
+            </div>
+            <div class="admin-form-group">
+              <label for="cTuitionDiscount">Học phí ưu đãi (VNĐ)</label>
+              <input type="number" id="cTuitionDiscount" class="admin-input" placeholder="8500000">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="admin-form-group">
+              <label for="cImageUrl">Đường dẫn ảnh đại diện</label>
+              <input type="text" id="cImageUrl" class="admin-input" value="/images/course-leadership.jpg">
+            </div>
+            <div class="admin-form-group" style="display: flex; align-items: center; margin-top: 28px;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="cActive" checked style="width: 18px; height: 18px;">
+                <span>Hiển thị khóa học trên Landing Page</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="cSyllabusJson">Chi tiết lộ trình các học phần (Định dạng JSON)</label>
+            <textarea id="cSyllabusJson" class="admin-input" style="min-height: 140px; font-family: monospace; font-size: 0.85rem;"></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+            <button type="button" class="btn-icon-action" style="width: auto; padding: 8px 16px;" onclick="closeAdminModal('courseEditModal')">Hủy</button>
+            <button type="submit" class="btn-icon-action" style="width: auto; padding: 8px 22px; background: var(--admin-orange); color: #fff; font-weight: 700; border: none;">
+              💾 Lưu Khóa Học
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       MODAL: ARTICLE EDIT / CREATE
+       =================================================================== -->
+  <div class="admin-modal-overlay" id="articleEditModal">
+    <div class="admin-modal-box" style="max-width: 760px;">
+      <div class="admin-modal-header">
+        <h3 id="articleModalTitle">Bài viết chia sẻ kiến thức</h3>
+        <button class="btn-icon-action" onclick="closeAdminModal('articleEditModal')">✕</button>
+      </div>
+      <div class="admin-modal-body">
+        <form id="articleForm" onsubmit="saveArticleForm(event)">
+          <div class="form-grid-2">
+            <div class="admin-form-group">
+              <label for="artTitle">Tiêu đề bài viết <span style="color: red;">*</span></label>
+              <input type="text" id="artTitle" class="admin-input" required>
+            </div>
+            <div class="admin-form-group">
+              <label for="artSlug">Đường dẫn slug <span style="color: red;">*</span></label>
+              <input type="text" id="artSlug" class="admin-input" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="admin-form-group">
+              <label for="artCategory">Chuyên mục</label>
+              <select id="artCategory" class="admin-input">
+                <option value="Lãnh đạo & Đội ngũ">Lãnh đạo & Đội ngũ</option>
+                <option value="Kỹ năng Thuyết trình">Kỹ năng Thuyết trình</option>
+                <option value="Đàm phán & Giao tiếp">Đàm phán & Giao tiếp</option>
+                <option value="Phát triển Bản thân">Phát triển Bản thân</option>
+              </select>
+            </div>
+            <div class="admin-form-group">
+              <label for="artReadTime">Thời gian đọc</label>
+              <input type="text" id="artReadTime" class="admin-input" placeholder="5 phút đọc">
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="artSummary">Mô tả tóm tắt</label>
+            <textarea id="artSummary" class="admin-input" style="min-height: 60px;"></textarea>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="artImageUrl">Đường dẫn ảnh bìa bài viết</label>
+            <input type="text" id="artImageUrl" class="admin-input" value="/images/course-leadership.jpg">
+          </div>
+
+          <div class="admin-form-group">
+            <label for="artContent">Nội dung chi tiết bài viết <span style="color: red;">*</span></label>
+            <textarea id="artContent" class="admin-input" style="min-height: 200px;" required></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+            <button type="button" class="btn-icon-action" style="width: auto; padding: 8px 16px;" onclick="closeAdminModal('articleEditModal')">Hủy</button>
+            <button type="submit" class="btn-icon-action" style="width: auto; padding: 8px 22px; background: var(--admin-orange); color: #fff; font-weight: 700; border: none;">
+              💾 Lưu Bài Viết
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification element -->
+  <div id="toastNotice" class="toast-notice"></div>
+
+  <!-- Admin JavaScript -->
+  <script src="/js/admin.js"></script>
+</body>
+</html>
