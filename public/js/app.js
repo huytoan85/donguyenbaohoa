@@ -110,9 +110,16 @@ async function loadSpeakerInfo() {
       if (d.speaker_achievements) {
         const achList = document.getElementById('speakerAchievementsList');
         if (achList) {
-          const lines = d.speaker_achievements.split('\n').filter(l => l.trim().length > 0);
+          const raw = d.speaker_achievements.replace(/\\n/g, '\n');
+          const lines = raw.split('\n').filter(l => l.trim().length > 0);
           achList.innerHTML = lines.map(line => {
-            const clean = line.replace(/^[•\-\*]\s*/, '');
+            let clean = line.replace(/^[•\-\*]\s*/, '').trim();
+            clean = clean
+              .replace(/(Phó Viện Trưởng - Viện Nghiên cứu Tư vấn Phát triển Bền vững \(CISD\))/g, '<strong>$1</strong>')
+              .replace(/(Trưởng vùng Đào tạo Xuất sắc toàn quốc năm 2020)/g, '<strong>$1</strong>')
+              .replace(/(129 tư vấn viên và 20 quản lý)/g, '<strong>$1</strong>')
+              .replace(/(Cử nhân Sư phạm)/g, '<strong>$1</strong>')
+              .replace(/(CIAM, ACS và ALMI)/g, '<strong>$1</strong>');
             return `<li>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
               <span>${clean}</span>
