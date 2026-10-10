@@ -26,28 +26,23 @@ function initMobileMenu() {
   const navLinks = document.getElementById('navLinks');
 
   if (toggleBtn && navLinks) {
-    toggleBtn.addEventListener('click', () => {
-      const isVisible = navLinks.style.display === 'flex';
-      navLinks.style.display = isVisible ? 'none' : 'flex';
-      if (!isVisible) {
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '80px';
-        navLinks.style.left = '0';
-        navLinks.style.right = '0';
-        navLinks.style.background = '#ffffff';
-        navLinks.style.padding = '20px';
-        navLinks.style.boxShadow = '0 10px 15px rgba(0,0,0,0.1)';
-      }
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navLinks.classList.toggle('mobile-open');
     });
 
     // Close menu when clicking link
     navLinks.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
-        if (window.innerWidth <= 768) {
-          navLinks.style.display = 'none';
-        }
+        navLinks.classList.remove('mobile-open');
       });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !toggleBtn.contains(e.target)) {
+        navLinks.classList.remove('mobile-open');
+      }
     });
   }
 }
