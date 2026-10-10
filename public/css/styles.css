@@ -686,11 +686,24 @@ button, input, select, textarea {
 
 .about-bio-text {
   color: var(--slate-600);
-  font-size: 1.02rem;
-  line-height: 1.8;
+  font-size: 1.04rem;
+  line-height: 1.85;
   margin-bottom: 30px;
   text-align: justify;
   text-justify: inter-word;
+}
+
+.about-bio-text p {
+  margin-bottom: 14px;
+}
+
+.about-bio-text p:last-child {
+  margin-bottom: 0;
+}
+
+.about-bio-text strong {
+  color: var(--navy-900);
+  font-weight: 700;
 }
 
 /* 4D Methodology Grid */

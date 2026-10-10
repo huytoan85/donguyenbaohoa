@@ -88,7 +88,21 @@ async function loadSpeakerInfo() {
       updateText('speakerTitleHero', d.speaker_title || 'Phó Viện Trưởng CISD');
       updateText('speakerBadgeHero', d.speaker_badge || 'Phó Viện Trưởng - Viện Nghiên cứu Tư vấn Phát triển Bền vững (CISD)');
       updateText('speakerSloganHero', d.speaker_slogan);
-      updateText('speakerBioText', d.speaker_bio);
+      if (d.speaker_bio) {
+        const bioEl = document.getElementById('speakerBioText');
+        if (bioEl) {
+          const paras = d.speaker_bio.split(/\n+/).filter(p => p.trim().length > 0);
+          bioEl.innerHTML = paras.map(p => {
+            let formatted = p.trim()
+              .replace(/(ĐỖ NGUYỄN BẢO HÒA)/g, '<strong>$1</strong>')
+              .replace(/(Phó Viện Trưởng - Viện Nghiên cứu Tư vấn Phát triển Bền vững \(CISD\))/g, '<strong>$1</strong>')
+              .replace(/(27 năm kinh nghiệm trong tuyển dụng, quản lý và phát triển nguồn nhân lực)/g, '<strong>$1</strong>')
+              .replace(/(19 năm công tác tại Manulife Việt Nam)/g, '<strong>$1</strong>')
+              .replace(/(Giám đốc Đào tạo vùng miền Nam)/g, '<strong>$1</strong>');
+            return `<p>${formatted}</p>`;
+          }).join('');
+        }
+      }
       updateText('speakerQuoteText', d.speaker_quote);
       updateText('speakerMethodologyText', d.speaker_methodology);
 
