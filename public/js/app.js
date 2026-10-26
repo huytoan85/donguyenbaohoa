@@ -80,11 +80,12 @@ async function loadSpeakerInfo() {
       updateText('aboutSpeakerName', `Diễn giả ${fullName}`);
       updateText('brandSpeakerName', fullName);
       updateText('footerBrandSpeakerName', fullName);
-      updateText('speakerTitleHero', d.speaker_title || 'Giám Đốc Đào Tạo Viện Nghiên Cứu Tư Vấn Phát Triển CISD');
-      updateText('speakerBadgeHero', d.speaker_badge || 'Giám Đốc Đào Tạo Viện Nghiên Cứu Tư Vấn Phát Triển CISD');
-      updateText('brandSpeakerTitle', d.speaker_title || 'Giám Đốc Đào Tạo CISD');
-      updateText('footerBrandSpeakerTitle', d.speaker_title || 'Giám Đốc Đào Tạo CISD');
-      updateText('aboutRoleTag', d.speaker_badge || d.speaker_title || 'Giám Đốc Đào Tạo Viện Nghiên Cứu Tư Vấn Phát Triển CISD');
+      updateText('speakerTitleHero', d.speaker_title || 'Giám Đốc Đào Tạo Viện Nghiên Cứu Tư Vấn Phát Triển Bền Vững CISD');
+      updateText('speakerBadgeHero', d.speaker_badge || 'Viện Nghiên Cứu Tư Vấn Phát Triển Bền Vững CISD');
+      const brandSub = (d.speaker_title && d.speaker_title.length <= 25) ? d.speaker_title : 'Giám Đốc Đào Tạo CISD';
+      updateText('brandSpeakerTitle', brandSub);
+      updateText('footerBrandSpeakerTitle', brandSub);
+      updateText('aboutRoleTag', d.speaker_title || d.speaker_badge || 'Giám Đốc Đào Tạo Viện Nghiên Cứu Tư Vấn Phát Triển Bền Vững CISD');
       updateText('speakerSloganHero', d.speaker_slogan);
       if (d.speaker_bio) {
         const bioEl = document.getElementById('speakerBioText');
@@ -93,7 +94,7 @@ async function loadSpeakerInfo() {
           bioEl.innerHTML = paras.map(p => {
             let formatted = p.trim()
               .replace(/(ĐỖ NGUYỄN BẢO HÒA)/g, '<strong>$1</strong>')
-              .replace(/(Giám Đốc Đào Tạo Viện [nN]ghiên [cC]ứu Tư [vV]ấn Phát [tT]riển CISD|Phó Viện Trưởng - Viện Nghiên cứu Tư vấn Phát triển Bền vững \(CISD\))/g, '<strong>$1</strong>')
+              .replace(/(Giám Đốc Đào Tạo Viện [nN]ghiên [cC]ứu Tư [vV]ấn Phát [tT]riển (?:Bền Vững )?CISD|Phó Viện Trưởng - Viện Nghiên cứu Tư vấn Phát triển Bền vững \(CISD\))/g, '<strong>$1</strong>')
               .replace(/(27 năm kinh nghiệm trong tuyển dụng, quản lý và phát triển nguồn nhân lực)/g, '<strong>$1</strong>')
               .replace(/(19 năm công tác tại Manulife Việt Nam)/g, '<strong>$1</strong>')
               .replace(/(Giám đốc Đào tạo vùng miền Nam)/g, '<strong>$1</strong>');
@@ -113,7 +114,7 @@ async function loadSpeakerInfo() {
           achList.innerHTML = lines.map(line => {
             let clean = line.replace(/^[•\-\*]\s*/, '').trim();
             clean = clean
-              .replace(/(Giám Đốc Đào Tạo Viện [nN]ghiên [cC]ứu Tư [vV]ấn Phát [tT]riển CISD|Phó Viện Trưởng - Viện Nghiên cứu Tư vấn Phát triển Bền vững \(CISD\))/g, '<strong>$1</strong>')
+              .replace(/(Giám Đốc Đào Tạo Viện [nN]ghiên [cC]ứu Tư [vV]ấn Phát [tT]riển (?:Bền Vững )?CISD|Phó Viện Trưởng - Viện Nghiên cứu Tư vấn Phát triển Bền vững \(CISD\))/g, '<strong>$1</strong>')
               .replace(/(Trưởng vùng Đào tạo Xuất sắc toàn quốc năm 2020)/g, '<strong>$1</strong>')
               .replace(/(129 tư vấn viên và 20 quản lý)/g, '<strong>$1</strong>')
               .replace(/(Cử nhân Sư phạm)/g, '<strong>$1</strong>')
